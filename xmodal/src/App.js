@@ -9,6 +9,7 @@ function App() {
     phone: '',
     dob: ''
   });
+  const [error, setError] = useState('');
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -20,33 +21,35 @@ function App() {
     const { username, email, phone, dob } = formData;
 
     if (!username || !email || !phone || !dob) {
-      alert('Please fill in all fields.');
+      setError('Please fill in all fields.');
       return;
     }
 
     if (!email.includes('@')) {
-      alert('Invalid email. Please check your email address.');
+      setError('Invalid email. Please check your email address.');
       return;
     }
 
     if (phone.length !== 10 || isNaN(phone)) {
-      alert('Invalid phone number. Please enter a 10-digit phone number.');
+      setError('Invalid phone number. Please enter a 10-digit phone number.');
       return;
     }
 
     const currentDate = new Date();
     const inputDate = new Date(dob);
     if (inputDate > currentDate) {
-      alert('Invalid date of birth.');
+      setError('Invalid date of birth.');
       return;
     }
 
+    setError('');
     setIsOpen(false);
     setFormData({ username: '', email: '', phone: '', dob: '' });
   };
 
   const handleModalClose = () => {
     setIsOpen(false);
+    setError('');
   };
 
   return (
@@ -68,6 +71,7 @@ function App() {
               <input type="date" id="dob" value={formData.dob} onChange={handleInputChange} />
               <button type="submit" className="submit-button">Submit</button>
             </form>
+            {error && <div className="error">{error}</div>}
           </div>
         </div>
       )}
@@ -76,4 +80,3 @@ function App() {
 }
 
 export default App;
-
